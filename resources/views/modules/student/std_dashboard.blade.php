@@ -16,7 +16,7 @@
                         </div>
                     @endif
 
-                   {{@$user->name}} You are logged in!
+                   Hi {{@$user->name}} !
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
         <div class="col-lg-8 col-md-8 col-sm-8 mt-5">
             <div class="card"> 
                 <div class="card-header">Student Dashboard</div> 
-                <div class="card-body mb-5">
+                <div class="card-body mb-5" id="myDiv">
                     <form   id="project-from" enctype="multipart/form-data">
                          
                          <input type="hidden" name="project_id" value="" id="project_id">
@@ -40,7 +40,7 @@
                             @enderror
                         </div> 
                         <div class="form-group row">
-                            <label for="first_name" class="col-md-4 col-form-label text-md-right">User Name</label>
+                            <label for="first_name" class="col-md-4 col-form-label text-md-right">Project Description</label>
 
                             <div class="col-md-6">
                                 <!-- <input id="user_name" type="text" class="form-control @error('user_name') is-invalid @enderror" name="user_name" value="" required autocomplete="user_name" autofocus> -->
@@ -137,7 +137,7 @@
                 rules:{
                     project_title:{ required:true},
                     description:{ required:true},
-                    image:{ required:true,accept: "jpg,jpeg,png"} 
+                    image:{ required:true} 
                 },
 
                  
@@ -188,7 +188,7 @@
                                 $("#description").val('');
                                 $("#project_id").val('');
                                 $('#image').val('');
-                                $('.polaroid').html('');
+                                $('.polaroid').html('<img src="{{asset('public/images/Upload_iamge.png')}}" alt="5 Terre" style="" id="imagefields">');
                             if(response.status ==  1){
                                 
                                 alert('Data Updated successfully');
@@ -239,7 +239,11 @@
                     $('#project_id').val(response.projectdet.id);
                     $('#project_title').val(response.projectdet.project_title);
                     $('#description').val(response.projectdet.description);                     
-                    $('#imagefields').attr('src','storage/app/public/images/projectimg/'+response.projectdet.file);                     
+                    $('#imagefields').attr('src','storage/app/public/images/projectimg/'+response.projectdet.file);
+
+                    $('html, body').animate({
+                        scrollTop: $("#myDiv").offset().top
+                    }, 2000);                     
                 },
 
                 error:function(error) 

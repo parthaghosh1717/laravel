@@ -33,7 +33,7 @@ Route::post('user-email-check', 'Auth\RegisterController@userEmailCheck')->name(
 
 Route::group(['namespace' => 'Modules','middleware' => 'auth'], function() {
 
-	Route::group(['namespace' => 'Student'], function() {
+	Route::group(['namespace' => 'Student','middleware' => 'check.student'], function() {
 		// Student Dashboard Routes.
 		Route::get('student-dashboard', 'DashboardController@dashboard')->name('student.dashboard');
 		Route::post('store-project', 'ProjectController@storeProject')->name('store_project_details');
@@ -42,9 +42,9 @@ Route::group(['namespace' => 'Modules','middleware' => 'auth'], function() {
 
 	});
 
-	Route::group(['namespace' => 'Teacher'], function() {
+	Route::group(['namespace' => 'Teacher','middleware' => 'check.teacher'], function() {
 		// Student Dashboard Routes.
-		Route::get('Teacher-dashboard', 'TeacherDashboardController@dashboard')->name('teacher.dashboard');
+		Route::get('Teacher-dashboard', 'TeacherDashboardController@dashboard')->name('teacher.dashboard')->middleware('check.teacher');
 	});
 
 });

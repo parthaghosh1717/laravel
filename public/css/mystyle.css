@@ -13,3 +13,8 @@ div.polaroid {
   width:100%; 
   height: 70%;
 }
+
+#toggle_pwd
+{
+    cursor: pointer;
+}

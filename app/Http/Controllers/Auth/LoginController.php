@@ -30,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -59,6 +59,9 @@ class LoginController extends Controller
         ]);
 
         //Find user by this email...
+        $username = $request->email;
+        $userpass = $request->password;
+        $chk = $request->checkbox;
 
         $user = User::where('email',$request->email)->first();
 
@@ -77,6 +80,9 @@ class LoginController extends Controller
                     if(@$user->type == 'S')
                     {
                         // dd('student');
+                        Session::put("userses",$username);
+                        Session::put("passuser",$userpass);
+                        Session::put("rem",$chk);
                         return redirect()->intended(route('student.dashboard'));
 
                     }
@@ -90,8 +96,8 @@ class LoginController extends Controller
 
                 else
                 {
-                    Session::flash('success', 'Invalide login !!!');
-                    return back();
+                
+                    return redirect()->back()->with('error', 'These credentials do not match our records.');
 
                 }
 
@@ -105,8 +111,8 @@ class LoginController extends Controller
 
                     $user->notify(new verifyRegistration($user));
 
-                    Session::flash('success', 'You are not verified your email, A New Confertion email has send to you please check,and confirm your email !!!');
-                    return redirect('login');
+                    // Session::flash('success', 'You are not verified your email, A New Confertion email has send to you please check,and confirm your email !!!');
+                    return redirect('login')->with('success','You are not verified your email, A new confirmation email has send to you please check,and confirm your email !!!');
                 } 
 
             }
@@ -114,8 +120,8 @@ class LoginController extends Controller
         }
         else
         {
-            Session::flash('success', 'We have found no recoard please register !');
-            return redirect()->route('login');
+            // Session::flash('success', 'We have found no recoard please register !');
+            return redirect()->route('login')->with('error','We have found no recoard if you are not register, please register !!!');
         }
 
 

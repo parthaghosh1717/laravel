@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Reset Password') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}">
+                    <form method="POST" action="{{ route('password.update') }}" id="cngpass">
                         @csrf
 
                         <input type="hidden" name="token" value="{{ $token }}">
@@ -17,7 +17,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus readonly>
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -62,4 +62,18 @@
         </div>
     </div>
 </div>
+@endsection
+@section('script')
+@include('includes.scripts')
+    <script>
+       $(document).ready(function(){
+          $('#cngpass').validate({
+            rules:{ 
+                password_confirmation:{required: true, equalTo: "#password"}                         
+             },
+
+            
+          });
+       });
+    </script>
 @endsection

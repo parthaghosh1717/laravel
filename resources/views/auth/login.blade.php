@@ -4,21 +4,23 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-        <!-- Session Message --> 
-        @if(Session::has('success')) 
+            <!-- Session Message --> 
+            @if(Session::has('success')) 
 
-            <div class="col-sm-12">
-                <div class="alert   alert-success alert-dismissible fade show" role="alert" >
-                    <span class="badge badge-pill badge-success">Success</span> 
-                        <strong> {{ Session::get('success') }}</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="col-sm-12">
+                    <div class="alert   alert-success alert-dismissible fade show" role="alert" >
+                        <span class="badge badge-pill badge-success">Success</span> 
+                            <strong> {{ Session::get('success') }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-        @endif  
-        <!--End of Session Message -->
+            @endif  
+            <!--End of Session Message -->
+         
+        @include('includes.message')
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
 
@@ -28,9 +30,9 @@
 
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                               <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Email address" value='{{ old("email") }} @if(Cookie::get("usercoo")!=false){{Cookie::get("usercoo")}}
+                                @endif' required autocomplete="email">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -44,8 +46,8 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" value='@if(Cookie::get("passcoo")!=false){{Cookie::get("passcoo")}}@endif'>
+                                <span id="toggle_pwd" class="fa fa-fw fa-eye field_icon"></span>
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -54,17 +56,17 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group row">
+                        <div class="form-group row">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <input type="checkbox" name="checkbox" id="remember" @if(Cookie::get("usercoo")!=false) checked @endif>
 
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
+                                    <label class="form-check-label" for="remember"  >
+                                        Remember Me 
                                     </label>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
@@ -85,4 +87,16 @@
         </div>
     </div>
 </div>
+@endsection
+@section('script')
+@include('includes.scripts')
+    <script type="text/javascript">
+        $(function () {
+            $("#toggle_pwd").click(function () {
+                $(this).toggleClass("fa-eye fa-eye-slash");
+               var type = $(this).hasClass("fa-eye-slash") ? "text" : "password";
+                $("#password").attr("type", type);
+            });
+        });
+    </script>
 @endsection
